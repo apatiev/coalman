@@ -2,6 +2,8 @@
 *.rbc
 .bundle
 .config
+.env
+.rbenv-version
 coverage
 InstalledFiles
 lib/bundler/man
@@ -16,3 +18,5 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+.DS_Store
