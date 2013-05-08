@@ -1,10 +1,19 @@
+require 'yaml'
+
 module Coalman
   module Config
-    def self.env!(key)
-      ENV[key] || raise("Missing configuration: #{key}")
+    extend self
+
+    def get(key)
+      @@conf ||= YAML.load_file(File.expand_path('../../../config/coalman.yml', __FILE__))
+      @@conf ? @@conf[key.downcase] : ENV[key.upcase]
     end
 
-    def self.api_key; ENV['COALMAN_API_KEY']; end
-    def self.graphite_url; env!('COALMAN_GRAPHITE_URL'); end
+    def get!(key)
+      get(key) || raise("Missing required configuration parameter: #{key}")
+    end
+
+    def api_key; get('api_key'); end
+    def graphite_url; get!('graphite_url'); end
   end
 end
