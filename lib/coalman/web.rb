@@ -55,7 +55,7 @@ module Coalman
         halt 503, {:result => false, :error => 'Connecting to backend metrics service failed'}.to_json
       end
 
-      result = !!satisfy_all      
+      result = satisfy_all      
       result_body = Validator.check(data, min, max, Aggregator.for(aggregate), empty_ok)
 
       result_body.each do |m|
