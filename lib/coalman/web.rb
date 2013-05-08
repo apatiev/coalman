@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/config_file'
 require 'rest-client'
 require 'json'
 
@@ -6,6 +7,9 @@ require 'coalman'
 
 module Coalman
   class Web < Sinatra::Base
+    register Sinatra::ConfigFile
+
+    config_file 'config/coalman.yml'
 
     configure do
       enable :logging
@@ -13,7 +17,7 @@ module Coalman
 
     before do
       content_type :json
-      protected! if Config.api_key
+      protected! if settings.api_key
     end
 
     helpers do
@@ -26,7 +30,7 @@ module Coalman
 
       def authorized?
         @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-        @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials[1] == Config.api_key
+        @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials[1] == settings.api_key
       end
 
       def valid?(params)
@@ -48,7 +52,7 @@ module Coalman
       satisfy_all = params['satisfy'] == 'all'
 
       begin
-        data = Graphite.fetch(Config.graphite_url, metric, range)
+        data = Graphite.fetch(settings.graphite_url, metric, range)
       rescue MetricNotFound
         halt 404, {:result => false, :error => 'Metric not found'}.to_json
       rescue MetricServiceRequestFailed

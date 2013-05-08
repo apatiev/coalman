@@ -1,4 +1,3 @@
-require 'coalman/config'
 require 'coalman/exceptions'
 require 'coalman/metric'
 require 'coalman/metric_aggregators'
