@@ -9,7 +9,7 @@ module Coalman
         { 
           :name   => m.name,
           :value  => value,
-          :result => m.data.empty? ? !!empty_ok : !(!!min && (value < min)) || (!!max && (value > max)),
+          :result => m.data.empty? ? !!empty_ok : !((!!min && (value < min)) || (!!max && (value > max)))
         }  
       end
     end
