@@ -64,7 +64,6 @@ module Coalman
           result || m[:result]
       end
 
-      status result ? 200 : 500
       {'result' => result, 'metrics' => result_body}.to_json
     end
 
